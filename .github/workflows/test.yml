@@ -23,11 +23,14 @@ jobs:
             rails-version: '7.1'
           - ruby-version: '2.6'
             rails-version: '8.0'
-          # Exclude Ruby 2.7 with Rails 8.0 (Rails 8.0 requires Ruby 3.1+)
+          # Exclude Ruby 2.7 with Rails 8.0 (Rails 8.0 requires Ruby 3.2+)
           - ruby-version: '2.7'
             rails-version: '8.0'
-          # Exclude Ruby 3.0 with Rails 8.0 (Rails 8.0 requires Ruby 3.1+)
+          # Exclude Ruby 3.0 with Rails 8.0 (Rails 8.0 requires Ruby 3.2+)
           - ruby-version: '3.0'
+            rails-version: '8.0'
+          # Exclude Ruby 3.1 with Rails 8.0 (Rails 8.0 requires Ruby 3.2+)
+          - ruby-version: '3.1'
             rails-version: '8.0'
 
     env:
