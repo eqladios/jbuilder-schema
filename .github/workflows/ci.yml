@@ -8,6 +8,24 @@ on:
   pull_request:
 
 jobs:
+  calculate_matrix:
+    name: 🧮 Calculate Dynamic Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.dynamic-matrix.outputs.matrix }}
+      totalRunners: ${{ steps.dynamic-matrix.outputs.totalRunners }}
+      testRunnersPerNode: ${{ steps.dynamic-matrix.outputs.testRunnersPerNode }}
+    steps:
+      - name: Dynamic Matrix
+        id: dynamic-matrix
+        uses: bullet-train-co/parallel-test-dynamic-matrix@v1
+        with:
+          # You can explicitly set the number of test nodes, or it will default to 4
+          numberOfTestNodes: 4
+          # You can explicitly set the number of runners per node, or it will default
+          # to 4 for public repos and 2 for private
+          # testRunnersPerNode: 2
+
   test:
     strategy:
       fail-fast: false
@@ -25,7 +43,7 @@ jobs:
       RAILS_VERSION: ${{ matrix.rails-version }}
 
     name: ${{ format('Test rails@{0} ruby@{1}', matrix.rails-version, matrix.ruby-version) }}
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -51,12 +69,12 @@ jobs:
         run: bundle exec rake standard
 
   starter_repo:
+    needs: calculate_matrix
     runs-on: ubuntu-latest
     name: Bullet Train Starter Repo Minitest
     strategy:
       fail-fast: false
-      matrix:
-        ci_node_index: [1, 2, 3, 4]
+      matrix: ${{ fromJson(needs.calculate_matrix.outputs.matrix) }}
     services:
       postgres:
         image: postgres:11-alpine
@@ -146,14 +164,22 @@ jobs:
         run: bin/rails db:schema:load
         working-directory: ./tmp/starter
 
-      - name: Run Tests
+      - name: Run tests
         id: run-tests
         env:
-          CI_NODE_TOTAL: ${{ strategy.job-total }}
-          CI_NODE_INDEX: ${{ strategy.job-index }}
-        continue-on-error: false
-        run: bin/parallel-ci
+          AUTH_ENDPOINT: https://no-site.nowhere
+          AWS_REGION: us-east-1
+          PARALLEL_TESTS_RECORD_RUNTIME: true
+        run: |
+          bundle exec parallel_test test \
+          -n ${{ fromJson(needs.calculate_matrix.outputs.totalRunners) }} \
+          --only-group ${{ matrix.parallel_test_groups }} \
+          --group-by runtime \
+          --allowed-missing 100 \
+          --verbose \
+          --verbose-command
         working-directory: ./tmp/starter
+        shell: bash
 
       - name: Test Summary
         uses: test-summary/action@v2
