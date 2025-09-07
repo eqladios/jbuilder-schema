@@ -78,7 +78,8 @@ jobs:
     name: Bullet Train Starter Repo Minitest
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.calculate_matrix.outputs.matrix) }}
+      matrix:
+        parallel_test_groups: ${{ fromJson(needs.calculate_matrix.outputs.matrix) }}
     services:
       postgres:
         image: postgres:11-alpine
