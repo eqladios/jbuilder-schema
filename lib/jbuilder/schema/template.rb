@@ -294,7 +294,8 @@ class Jbuilder::Schema
 
     def _primitive_type(value)
       case value
-      when ::Hash, ::Struct, ::OpenStruct, ::ActiveRecord::Base then :object
+      when ::Hash, ::Struct, ::OpenStruct then :object
+      when ->(v) { defined?(::ActiveRecord::Base) && v.is_a?(::ActiveRecord::Base) } then :object
       when ::Array then :array
       when ::Float, ::BigDecimal then :number
       when true, false then :boolean
@@ -322,7 +323,11 @@ class Jbuilder::Schema
     end
 
     def _required!(keys)
-      presence_validated_attributes = @configuration.object&.class.try(:validators).to_a.flat_map { _1.attributes if _1.is_a?(::ActiveRecord::Validations::PresenceValidator) } + _required
+      presence_validated_attributes = if defined?(::ActiveRecord::Validations::PresenceValidator)
+        @configuration.object&.class.try(:validators).to_a.flat_map { _1.attributes if _1.is_a?(::ActiveRecord::Validations::PresenceValidator) }
+      else
+        []
+      end + _required
       keys & [_key(:id), *presence_validated_attributes.flat_map { [_key(_1), _key("#{_1}_id")] }]
     end
 
