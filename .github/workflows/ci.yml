@@ -86,7 +86,6 @@ jobs:
       POSTGRES_PASSWORD: password
       BUNDLE_JOBS: 2
       BUNDLE_RETRY: 3
-      # ensure bundler isn't in deployment/frozen during gem linking
       BUNDLE_DEPLOYMENT: "false"
       BUNDLE_FROZEN: "false"
 
@@ -103,19 +102,16 @@ jobs:
           target_dir: tmp/core
           repository: bullet-train-co/bullet_train-core
 
-      # Do NOT auto-bundle yet; we'll unset deployment and link the gem first.
-      # The starter repo's .ruby-version will be used automatically.
       - uses: ruby/setup-ruby@v1
         with:
           working-directory: tmp/starter
           bundler-cache: false
 
-      - name: Disable bundler deployment in starter
+      - name: Disable bundler deployment/frozen
         working-directory: tmp/starter
         run: |
-          bundle config unset deployment || true
-          bundle config unset frozen || true
-          sed -i.bak '/deployment:/d;/frozen:/d' .bundle/config || true
+          bundle config unset deployment
+          bundle config unset frozen
 
       - run: corepack enable
 
