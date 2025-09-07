@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency "jbuilder"
+  spec.add_dependency "jbuilder", ">= 2.12"
   spec.add_dependency "rails", ">= 5.0.0"
   spec.add_dependency "method_source"
 
