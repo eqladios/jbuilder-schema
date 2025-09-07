@@ -7,6 +7,12 @@ gemspec
 
 gem "rake", "~> 13.0"
 
+gem "standard", "~> 1.3"
+
+gem "mocha"
+
+rails_version = ENV.fetch("RAILS_VERSION", "7.0")
+
 sqlite3_version = if rails_version == "main" || rails_version.start_with?("8.")
   "~> 2.1"
 else
@@ -14,12 +20,6 @@ else
 end
 
 gem "sqlite3", sqlite3_version
-
-gem "standard", "~> 1.3"
-
-gem "mocha"
-
-rails_version = ENV.fetch("RAILS_VERSION", "7.0")
 
 rails_constraint = if rails_version == "main"
   {github: "rails/rails"}
