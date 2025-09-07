@@ -155,3 +155,9 @@ jobs:
             --allowed-missing 100 \
             --verbose \
             --verbose-command
+
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "tmp/starter/test/reports/**/TEST-*.xml"
+        if: always()
