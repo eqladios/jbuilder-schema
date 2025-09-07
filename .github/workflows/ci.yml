@@ -166,8 +166,13 @@ jobs:
           core_dir: tmp/core
 
       - name: Set up database schema
-        run: bin/rails db:schema:load
+        run: bin/rake parallel:setup[${{ fromJson(needs.calculate_matrix.outputs.testRunnersPerNode) }}]
         working-directory: ./tmp/starter
+
+      - name: Touch Parallel Tests Runtime Log
+        run: touch tmp/parallel_runtime_test.log
+        working-directory: ./tmp/starter
+        shell: bash
 
       - name: Run tests
         id: run-tests
