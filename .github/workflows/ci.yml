@@ -100,7 +100,8 @@ jobs:
           --health-retries 5
     env:
       RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      POSTGRES_USER: rails
+      POSTGRES_PASSWORD: password
       BUNDLE_JOBS: 2
       BUNDLE_RETRY: 3
     steps:
@@ -151,10 +152,8 @@ jobs:
           application_dir: tmp/starter
           core_dir: tmp/core
 
-      - name: Set up parallel databases
-        run: |
-          bin/rake parallel:drop
-          bin/rake parallel:setup[${{ fromJson(needs.calculate_matrix.outputs.testRunnersPerNode) }}]
+      - name: Set up parallel_tests
+        run: bin/rake parallel:setup[${{ fromJson(needs.calculate_matrix.outputs.testRunnersPerNode) }}]
         working-directory: tmp/starter
 
 
