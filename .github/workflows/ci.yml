@@ -111,15 +111,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: tmp/starter/.nvmrc
-          cache: "yarn"
-          cache-dependency-path: tmp/starter/yarn.lock
 
-      - name: Enable Corepack and Yarn
+      - name: Enable Corepack (Yarn from package.json)
         run: |
           corepack enable
-          corepack prepare yarn@stable --activate
+          corepack prepare $(jq -r .packageManager package.json) --activate
           yarn --version
         working-directory: tmp/starter
+
+      - name: Set up Yarn Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: tmp/starter/.nvmrc
+          cache: "yarn"
+          cache-dependency-path: tmp/starter/yarn.lock
 
       - name: Allow adding of this gem
         run: bundle config unset deployment
