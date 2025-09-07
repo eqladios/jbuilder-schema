@@ -7,7 +7,13 @@ gemspec
 
 gem "rake", "~> 13.0"
 
-gem "sqlite3", "~> 1.4"
+sqlite3_version = if rails_version == "main" || rails_version.start_with?("8.")
+  "~> 2.1"
+else
+  "~> 1.4"
+end
+
+gem "sqlite3", sqlite3_version
 
 gem "standard", "~> 1.3"
 
