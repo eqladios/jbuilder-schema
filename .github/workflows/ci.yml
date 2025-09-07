@@ -28,14 +28,14 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true
-    - name: Run tests
-      run: bundle exec rake test
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake test
 
   standard:
     runs-on: ubuntu-latest
@@ -56,10 +56,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Set identifiers for parallel jobs. These can be anything.
-        # For instance if you want a Three Amigos themed pipeline you could use:
-        # ci_node_index: [Dusty, Ned, Lucky]
-        ci_node_index: [1,2,3,4]
+        ci_node_index: [1, 2, 3, 4]
     services:
       postgres:
         image: postgres:11-alpine
@@ -69,7 +66,6 @@ jobs:
           POSTGRES_DB: rails_test
           POSTGRES_USER: rails
           POSTGRES_PASSWORD: password
-        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -79,7 +75,6 @@ jobs:
         image: redis
         ports:
           - "6379:6379"
-        # Set health checks to wait until redis has started
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -116,8 +111,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: tmp/starter/.nvmrc
-          cache: 'yarn'
+          cache: "yarn"
           cache-dependency-path: tmp/starter/yarn.lock
+
+      - name: Enable Corepack and Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@stable --activate
+          yarn --version
+        working-directory: tmp/starter
 
       - name: Allow adding of this gem
         run: bundle config unset deployment
@@ -142,21 +144,14 @@ jobs:
       - name: Run Tests
         id: run-tests
         env:
-          # Specifies how many jobs you would like to run in parallel,
-          # used for partitioning
           CI_NODE_TOTAL: ${{ strategy.job-total }}
-          # Use the index from matrix as an environment variable
           CI_NODE_INDEX: ${{ strategy.job-index }}
         continue-on-error: false
-        run : bin/parallel-ci
+        run: bin/parallel-ci
         working-directory: ./tmp/starter
 
       - name: Test Summary
         uses: test-summary/action@v2
         with:
           paths: "tmp/starter/test/reports/**/TEST-*.xml"
-          #output: test-summary.md
         if: always()
-
-
-
