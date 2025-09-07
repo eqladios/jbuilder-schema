@@ -103,9 +103,6 @@ jobs:
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
       BUNDLE_JOBS: 2
       BUNDLE_RETRY: 3
-      BUNDLE_DEPLOYMENT: "false"
-      BUNDLE_FROZEN: "false"
-
     steps:
       - name: Checkout This Repo
         uses: actions/checkout@v4
@@ -148,21 +145,20 @@ jobs:
           application_dir: tmp/starter
           local_gem_dir: .
 
-      - name: Bundle install (starter)
-        working-directory: tmp/starter
-        run: bundle install --jobs 4 --retry 3
-
       - name: Link Core Repo
         uses: bullet-train-co/link-core-gems@v1
         with:
           application_dir: tmp/starter
           core_dir: tmp/core
 
-      - name: Set up Parallel Tests
-        run: bin/rake parallel:setup[${{ fromJson(needs.calculate_matrix.outputs.testRunnersPerNode) }}]
+      - name: Set up parallel databases
+        run: |
+          bin/rake parallel:drop
+          bin/rake parallel:setup[${{ fromJson(needs.calculate_matrix.outputs.testRunnersPerNode) }}]
         working-directory: tmp/starter
 
-      - name: Touch Parallel Tests Runtime Log
+
+      - name: Touch parallel_tests runtime log
         run: touch tmp/parallel_runtime_test.log
         working-directory: tmp/starter
 
@@ -172,7 +168,7 @@ jobs:
           AUTH_ENDPOINT: https://no-site.nowhere
           AWS_REGION: us-east-1
           PARALLEL_TESTS_RECORD_RUNTIME: true
-        working-directory: tmp/starter
+        continue-on-error: false
         run: |
           bundle exec parallel_test test \
             -n ${{ fromJson(needs.calculate_matrix.outputs.totalRunners) }} \
@@ -181,11 +177,10 @@ jobs:
             --allowed-missing 100 \
             --verbose \
             --verbose-command
+        working-directory: tmp/starter
 
       - name: Test Summary
         uses: test-summary/action@v2
         with:
           paths: "tmp/starter/test/reports/**/TEST-*.xml"
         if: always()
-
-
