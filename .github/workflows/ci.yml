@@ -30,7 +30,7 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Standard"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -106,7 +106,7 @@ jobs:
       BUNDLE_RETRY: 3
     steps:
       - name: Checkout This Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Checkout Starter Repo
         uses: bullet-train-co/checkout-repo-with-matching-branch@v1
@@ -130,7 +130,7 @@ jobs:
         run: corepack enable
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: tmp/starter/.nvmrc
           cache: "yarn"
