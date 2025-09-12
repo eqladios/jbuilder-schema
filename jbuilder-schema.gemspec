@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/bullet-train-co/jbuilder-schema"
   spec.license = "MIT"
 
-  spec.required_ruby_version = ">= 2.7.0"
+  spec.required_ruby_version = ">= 2.6.0"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 
@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "jbuilder", ">= 2.12"
-  spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_dependency "rails", ">= 5.0.0"
   spec.add_dependency "method_source"
   # spec.add_dependency "mutex_m"
   spec.add_dependency "ostruct"
