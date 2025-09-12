@@ -12,6 +12,8 @@ gem "standard", "~> 1.3"
 gem "mocha"
 
 gem "mutex_m"
+gem "ostruct"
+gem "bigdecimal"
 
 rails_version = ENV.fetch("RAILS_VERSION", "7.0")
 
