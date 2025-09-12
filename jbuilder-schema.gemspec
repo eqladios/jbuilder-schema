@@ -36,9 +36,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "jbuilder", ">= 2.12"
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "method_source"
-  spec.add_dependency "mutex_m"
+  # spec.add_dependency "mutex_m"
   spec.add_dependency "ostruct"
   spec.add_dependency "bigdecimal"
+  # spec.add_dependency "drb"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
