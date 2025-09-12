@@ -12,16 +12,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rails-version:
-          - "7.1"
-          - "6.1"
-          - "main"
-        ruby-version:
-          - "3.1"
-          - "3.2"
+        ruby-version: ["2.7", "3.0", "3.1", "3.2", "3.3", "3.4"]
+        rails-version: ["6.0", "6.1", "7.0", "7.1", "7.2", "8.0"]
         exclude:
-          # Rails main requires Ruby 3.2+
-          - { rails-version: "main", ruby-version: "3.1" }
+          # Rails 7.2 requires Ruby 3.1+
+          - ruby-version: "2.7"
+            rails-version: "7.2"
+          - ruby-version: "3.0"
+            rails-version: "7.2"
+          # Rails 8.0/main requires Ruby 3.2+
+          - ruby-version: "2.7"
+            rails-version: "8.0"
+          - ruby-version: "3.0"
+            rails-version: "8.0"
+          - ruby-version: "3.1"
+            rails-version: "8.0"
+          - rails-version: "main"
+            ruby-version: "3.1"
+
     env:
       RAILS_ENV: test
       RAILS_VERSION: ${{ matrix.rails-version }}
