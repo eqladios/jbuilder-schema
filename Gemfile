@@ -11,10 +11,7 @@ gem "standard", "~> 1.3"
 
 gem "mocha"
 
-# Add ostruct gem for Ruby >= 3.5 (since it was moved to a separate gem)
-if RUBY_VERSION >= "3.5"
-  gem "ostruct"
-end
+gem "mutex_m"
 
 rails_version = ENV.fetch("RAILS_VERSION", "7.0")
 
