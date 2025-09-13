@@ -273,9 +273,7 @@ class Jbuilder::Schema::TemplateTest < ActionView::TestCase
 
   test "schematize type" do
     json = Jbuilder::Schema::Template.new nil
-    def json._schema(*args, **kwargs, &block)
-      super(*args, **kwargs, &block)
-    end # We're marking it public on the singleton, but can't use `public` since we're ultimately a BasicObject.
+    def json._schema(...) = super # We're marking it public on the singleton, but can't use `public` since we're ultimately a BasicObject.
 
     assert_equal({type: :integer}, json._schema(nil, 1))
     assert_equal({type: :number}, json._schema(nil, 1.5))
@@ -301,9 +299,7 @@ class Jbuilder::Schema::TemplateTest < ActionView::TestCase
 
   test "one-line text is defined correctly" do
     json = Jbuilder::Schema::Template.new nil
-    def json._one_line?(*args, **kwargs, &block)
-      super(*args, **kwargs, &block)
-    end
+    def json._one_line?(...) = super
 
     one_line = <<-JBUILDER
       json.articles do
