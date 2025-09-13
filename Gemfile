@@ -18,7 +18,7 @@ gem "ostruct"
 gem "bigdecimal"
 # gem "drb"
 
-# rails_version = ENV.fetch("RAILS_VERSION", "7.0")
+rails_version = ENV.fetch("RAILS_VERSION", "7.0")
 
 # sqlite3_version = if rails_version == "main" || rails_version.start_with?("8.")
 #   "~> 2.1"
