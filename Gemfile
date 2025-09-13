@@ -28,9 +28,3 @@ rails_constraint =
   end
 
 gem "rails", rails_constraint
-
-# Ensure Rails-5 CI lanes don’t pick a broken jbuilder
-# Rails < 6 needs a pre-2.12 jbuilder
-if rails_version != "main" && Gem::Version.new(rails_version) < Gem::Version.new("6.0")
-  gem "jbuilder", "~> 2.11.5"
-end

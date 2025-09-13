@@ -7,7 +7,6 @@ require "rails"
 
 require "active_support"
 require "active_support/core_ext/module/attr_internal"
-require "active_support/core_ext/class/attribute"
 
 require "jbuilder"
 Jbuilder::Railtie.run_initializers
