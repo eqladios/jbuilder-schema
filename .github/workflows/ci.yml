@@ -78,7 +78,7 @@ jobs:
           numberOfTestNodes: 4
 
   starter_repo:
-    needs: [calculate_matrix]
+    needs: [test, standard, calculate_matrix]
     runs-on: ubuntu-latest
     name: Bullet Train Starter Repo Tests
     strategy:
