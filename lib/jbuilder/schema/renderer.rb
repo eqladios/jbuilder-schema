@@ -10,12 +10,12 @@ class Jbuilder::Schema::Renderer
     @default_locals = default_locals
   end
 
-  def yaml(object = nil, title: nil, description: nil, assigns: nil, **options)
-    normalize(render(object, title: title, description: description, assigns: assigns, **options)).to_yaml
+  def yaml(...)
+    normalize(render(...)).to_yaml
   end
 
-  def json(object = nil, title: nil, description: nil, assigns: nil, **options)
-    normalize(render(object, title: title, description: description, assigns: assigns, **options)).to_json
+  def json(...)
+    normalize(render(...)).to_json
   end
 
   def render(object = nil, title: nil, description: nil, assigns: nil, **options)
