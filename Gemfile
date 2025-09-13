@@ -9,24 +9,20 @@ gem "rake", "~> 13.0"
 
 gem "standard", "~> 1.3"
 
-gem "sqlite3", "~> 2.1"
-
 gem "mocha"
 
-# gem "mutex_m"
 gem "ostruct"
 gem "bigdecimal"
-# gem "drb"
 
 rails_version = ENV.fetch("RAILS_VERSION", "7.0")
 
-# sqlite3_version = if rails_version == "main" || rails_version.start_with?("8.")
-#   "~> 2.1"
-# else
-#   "~> 1.4"
-# end
+sqlite3_version = if rails_version == "main" || rails_version.start_with?("7.1.")
+  "~> 2.1"
+else
+  "~> 1.4"
+end
 
-# gem "sqlite3", sqlite3_version
+gem "sqlite3", sqlite3_version
 
 rails_constraint = if rails_version == "main"
   {github: "rails/rails"}
