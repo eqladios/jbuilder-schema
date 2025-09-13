@@ -114,7 +114,9 @@ class Jbuilder::Schema::PartialsTest < ActionView::TestCase
 
   test "one-line text is defined correctly" do
     json = Jbuilder::Schema::Template.new nil
-    def json._one_line?(...) = super
+    def json._one_line?(...)
+      super
+    end
 
     one_line = <<-JBUILDER
       json.articles do
