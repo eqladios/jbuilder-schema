@@ -16,7 +16,7 @@ gem "bigdecimal"
 
 rails_version = ENV.fetch("RAILS_VERSION", "7.0")
 
-sqlite3_version = if rails_version == "main" || Gem::Version.new(rails_version) >= "7.1"
+sqlite3_version = if rails_version == "main" || Gem::Version.new(rails_version) >= Gem::Version.new("7.1")
   "~> 2.1"
 else
   "~> 1.4"
